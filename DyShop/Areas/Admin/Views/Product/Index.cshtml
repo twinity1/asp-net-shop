@@ -1,0 +1,29 @@
+﻿@using GridMvc
+@using DyShop.Helpers.Html
+@model IEnumerable<DyShop.Data.Entities.Product>
+@{
+    ViewData["Title"] = "Products overview";
+}
+
+<div class="d-flex justify-content-end m-1">
+    <a class="btn btn-primary" asp-action="New">New</a>
+</div>
+
+@{
+    var grid = Html.Grid(Model).Columns(columns =>
+    {
+        columns.Add(x => x.Id);
+        columns.Add(x => x.Title);
+        columns.Add(x => x.Price);
+        columns.Add(x => x.MainCategory.Title).Titled("Main category");
+        columns.Add()
+            .Sanitized(false)
+            .Encoded(false)
+            .RenderValueAs(product => Html.Partial("_GridAction", product).GetString());
+    }).Filterable().Sortable();
+
+    grid.RenderOptions.GridCountDisplayName = "Total item count";
+    grid.RenderOptions.ShowGridItemsCount = true;
+}
+
+@grid

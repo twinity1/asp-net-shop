@@ -1,0 +1,16 @@
+@model DyShop.Areas.Shop.Models.ProductEnquiryModel
+<html>
+<head>
+    <title>Dotaz</title>
+</head>
+<body>
+<div>Dotaz ohledně produktu: <a href="@Model.Url">@Model.Url</a></div>
+<div>Jméno: @Model.Name</div>
+<div>Email: @Model.Email</div>
+<div>Dotaz: @Model.Question</div>
+
+<div>
+    <a href="mailto:@Model.Email">Odpovědět</a>
+</div>
+</body>
+</html>

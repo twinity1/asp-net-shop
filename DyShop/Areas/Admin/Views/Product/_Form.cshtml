@@ -1,0 +1,104 @@
+﻿@using DyShop.Helpers.Collections
+@model DyShop.Areas.Admin.Models.ProductViewModel
+
+<form asp-action="@ViewContext.RouteData.Values["Action"]" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id">
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input class="form-control" type="text" asp-for="Title">
+        <span class="text-danger" asp-validation-for="Title"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea class="form-control" type="text" asp-for="Description"></textarea>
+        <span class="text-danger" asp-validation-for="Description"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price"></label>
+        <input class="form-control" type="number" asp-for="Price">
+        <span class="text-danger" asp-validation-for="Price"></span>
+    </div>
+    <div class="form-group">
+        <input type="checkbox" asp-for="Available">
+        <label asp-for="Available"></label>
+        <span class="text-danger" asp-validation-for="Available"></span>
+    </div>
+    <div class="form-group">
+        <input type="checkbox" asp-for="Featured">
+        <label asp-for="Featured"></label>
+        <span class="text-danger" asp-validation-for="Featured"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ProductGroup"></label>
+        <select asp-for="ProductGroup" class="form-control">
+            <option value="">--- Select ---</option>
+            @foreach (var productGroupItem in Model.ProductGroups)
+            {
+                <option value="@productGroupItem.Id">@productGroupItem.Title</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="ProductMainCategory"></label>
+        <select asp-for="ProductMainCategory" class="form-control">
+            <option value="">--- Select ---</option>
+            @foreach (var productCategory in Model.ProductCategories)
+            {
+                <option value="@productCategory.Id">@productCategory.Title</option>
+            }
+        </select>
+        <span class="text-danger" asp-validation-for="ProductMainCategory"></span>
+    </div>
+    <div class="form-group">
+        <span class="font-weight-bold">Other categories</span>
+        @for (var i = 0; i < Model.ProductCategories.Count; i++)
+        {
+            <div>
+                <input type="hidden" asp-for="SelectedCategories[i].Id" value="@Model.ProductCategories[i].Id"/>
+                <input type="checkbox" asp-for="SelectedCategories[i].Checked"/>
+                <label asp-for="SelectedCategories[i].Checked">@Model.ProductCategories[i].Title</label>
+            </div>
+        }
+        <span class="text-danger" asp-validation-for="ProductCategories"></span>
+    </div>
+    
+    @{ var parameterIndex = 0; }
+    
+    @foreach (var group in Model.ProductParameterGroups)
+    {
+        <div class="form-group">
+            <span class="font-weight-bold">@group.Title</span>
+            
+            @foreach (var parameter in group.Parameters)
+            {
+                <div>
+                    <input asp-for="SelectedProductParameters[parameterIndex].Checked">
+                    <label asp-for="SelectedProductParameters[parameterIndex].Checked">@parameter.Title</label>
+                    <input type="hidden" asp-for="SelectedProductParameters[parameterIndex].Id"/>
+                    
+                    @{ parameterIndex++; }
+                </div>
+            }
+        </div>
+    }
+    
+    <div class="form-group">
+        <div class="row">
+            @for (var i = 0; i < Model.ProductPhotos.Count; i++)
+            {
+                <div class="col-md-3">
+                    <label asp-for="PhotosDelete[i]">Delete this photo</label>
+                    <input class="form-group" asp-for="PhotosDelete[i]" type="checkbox">
+                    <img class="img-fluid" src="/@Model.ProductPhotos[i].SavePath"/>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="NewPhotos"></label>
+        <input class="form-control" type="file" asp-for="NewPhotos" multiple>
+        <span class="text-danger" asp-validation-for="NewPhotos"></span>
+    </div>
+
+    <button class="btn btn-primary">Submit</button>
+</form>

@@ -1,0 +1,349 @@
+﻿@using DyShop.Helpers.Controller
+@using DyShop.Services.Breadcrumbs
+@addTagHelper *, DyShop
+@addTagHelper *, WebOptimizer.Core
+@inject BreadcrumbsService _breadcrumbsService
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Kunstwerk | @ViewData["Title"]</title>
+    <meta charset="UTF-8">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <link rel="shortcut icon" href="~/images/favicon.ico">
+
+    <link href="https://fonts.googleapis.com/css?family=Maven+Pro:400,500,700%7CRoboto:300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="~/css/linearicons.css">
+    <link rel="stylesheet" href="~/vendors/owl-carousel/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/vendors/monkeysan-tooltip/monkeysan-jquery-tooltip.css">
+    <link rel="stylesheet" href="~/vendors/fancybox/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="~/vendors/arcticmodal/jquery.arcticmodal-0.3.css">
+    <link rel="stylesheet" href="~/vendors/jquery-ui/jquery-ui.min.css">
+
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/animate.min.css">
+
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/css/responsive.css">
+    <link rel="stylesheet" href="~/css/custom.css">
+</head>
+
+<body class="mad-body--scheme-brown">
+<div id="mad-page-wrapper" class="mad-page-wrapper">
+
+<header id="mad-header" class="mad-header">
+<div class="mad-header-section mad-header-section--sticky-xl">
+          
+          <div class="mad-header-col">
+            <a asp-controller="Home" asp-action="Index" class="mad-ln--independent"><img src="~/images/logo.png" alt=""></a>
+          </div>
+          
+          <div class="mad-header-col">
+            <div class="mad-header-items">
+              <div>
+                
+                <nav class="mad-navigation-container">
+                  <ul class="mad-navigation mad-navigation--vertical-sm">
+                    <li class="menu-item"><a asp-controller="Home" asp-action="Index" class="mad-ln--independent">Domů</a></li>
+                    <li class="menu-item"><a asp-controller="Product" asp-action="Index" class="mad-ln--independent">Produkty</a></li>
+                  </ul>
+                </nav>
+                
+              </div>
+              <div class="mad-search-area">
+                <form class="mad-search-form">
+                  <button type="button" data-arctic-modal="#search-modal" class="mad-icon mad-seacrh-click"><i class="icon licon-magnifier"></i></button>
+                  <input type="text" placeholder="Search">
+                </form>
+              </div>
+              <div class="mad-dropdown">
+                <button type="button" class="mad-icon mad-dropdown-title" id="openCartBtn"><i class="icon licon-cart-empty"></i></button>
+                    <div class="shopping-cart mad-dropdown-element mad-dropdown-element--x-left" id="miniCart">
+                        <vc:cart cart-hash="@ViewContext.HttpContext.Request.Cookies[CartCookieHelper.CookieName]"/>
+                    </div>
+                </div>
+              <div>
+                <button type="button" data-arctic-modal="#search-modal" class="mad-icon"><i class="icon licon-user"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+</header>
+
+@if ((ViewData.ContainsKey("HideBreadcrumbs") && (bool) ViewData["HideBreadcrumbs"] == false)|| ViewData.ContainsKey("HideBreadcrumbs") == false) {
+    <div class="mad-breadcrumb">
+        <div class="container">
+            @if ((ViewData.ContainsKey("HideHeading") && ((bool) ViewData["HideHeading"]) == false) || ViewData.ContainsKey("HideHeading") == false)
+            {
+                <h1 class="mad-page-title mad-title-with-line">@(ViewData["Heading"] ?? ViewData["Title"])</h1>
+            }
+            <nav class="mad-breadcrumb-path">
+                <vc:breadcrumbs />
+            </nav>
+        </div>
+    </div>
+}
+
+<div id="pageContent">
+@RenderBody()    
+</div>
+
+<div class="mad-section no-pb">
+
+    <div class="mad-instafeed">
+        <h4 class="mad-page-title align-center">Follow <a href="#" class="link-color-3">xxxx</a></h4>
+        <div id="instafeed" data-get="user" data-user="customer" data-limit="6" class="mad-grid item-col-6 no-gutters"></div>
+    </div>
+
+    <section class="mad-section size-2 mad-section--stretched mad-colorizer--scheme-light-2 mad-colorizer--scheme-color-8">
+        <div class="mad-colorizer-bg-color">
+            <img class="svg mad-pattern" src="~/images/background_pattern.svg" alt="">
+        </div>
+        <div class="container">
+
+            <div class="mad-icon-boxes hr-type item-col-3">
+                <div class="mad-col">
+
+                    <article class="mad-icon-box">
+                        <i class="mad-icon-box-icon">
+                            <img class="svg" src="~/Kunstwerk_svg_icons/truck.svg" alt="">
+                        </i>
+                        <div class="mad-icon-box-content">
+                            <h2 class="mad-icon-box-title">Fast Delivery</h2>
+                            <p>
+                                We ship all over the world with DHL
+                            </p>
+                        </div>
+                    </article>
+
+                </div>
+                <div class="mad-col">
+
+                    <article class="mad-icon-box">
+                        <i class="mad-icon-box-icon">
+                            <img class="svg" src="~/Kunstwerk_svg_icons/cart.svg" alt="">
+                        </i>
+                        <div class="mad-icon-box-content">
+                            <h2 class="mad-icon-box-title">Secure Checkout</h2>
+                            <p>
+                                You can pay with PayPal even if you don’t <br> have an account.
+                            </p>
+                        </div>
+                    </article>
+
+                </div>
+                <div class="mad-col">
+
+                    <article class="mad-icon-box">
+                        <i class="mad-icon-box-icon">
+                            <img class="svg" src="~/Kunstwerk_svg_icons/box.svg" alt="">
+                        </i>
+                        <div class="mad-icon-box-content">
+                            <h2 class="mad-icon-box-title">Free Returns</h2>
+                            <p>
+                                30-day return policy offered!
+                            </p>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<footer id="mad-footer" class="mad-footer style-2">
+
+    <div class="mad-footer-main">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-sm-6">
+
+                    <section>
+                        <a href="index.html" class="mad-ln--independent mad-logo">
+                            <img src="~/images/logo2.png" alt="">
+                        </a>
+                        <div class="mad-our-info">
+
+                            <article class="mad-info-block">
+                                <i class="mad-info-icon licon-map-marker"></i>
+                                <p>
+                                    8901 Marmora Road, Glasgow, <br>
+                                    D04 89GR.
+                                </p>
+                            </article>
+
+
+                            <article class="mad-info-block">
+                                <i class="mad-info-icon licon-telephone2"></i>
+                                <p>+1 800 603 6035</p>
+                            </article>
+
+
+                            <article class="mad-info-block">
+                                <i class="mad-info-icon licon-at-sign"></i>
+                                <a href="#" class="link-color-3">mail@companyname.com</a>
+                            </article>
+
+                        </div>
+                        <ul class="mad-social-icons color-white">
+                            <li>
+                                <a href="#">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </section>
+
+                </div>
+                <div class="col-lg-3 col-sm-6">
+
+                    <section>
+                        <h6 class="mad-widget-title">About</h6>
+                        <nav class="vr-list mad-links-color2">
+                            <ul>
+                                <li>
+                                    <a href="#">What is Kunstwerk</a>
+                                </li>
+                                <li>
+                                    <a href="#">Sell on Kunstwerk</a>
+                                </li>
+                                <li>
+                                    <a href="#">Testimonials</a>
+                                </li>
+                                <li>
+                                    <a href="#">News</a>
+                                </li>
+                                <li>
+                                    <a href="#">Contact Us</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </section>
+
+                </div>
+                <div class="col-lg-3 col-sm-6">
+
+                    <section>
+                        <h6 class="mad-widget-title">Products</h6>
+                        <nav class="vr-list mad-links-color2">
+                            <ul>
+                                <li>
+                                    <a href="#">Bracelets</a>
+                                </li>
+                                <li>
+                                    <a href="#">Earrings</a>
+                                </li>
+                                <li>
+                                    <a href="#">Necklaces</a>
+                                </li>
+                                <li>
+                                    <a href="#">Rings</a>
+                                </li>
+                                <li>
+                                    <a href="#">Shop All</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </section>
+
+                </div>
+                <div class="col-lg-3 col-sm-6">
+
+                    <section>
+                        <h6 class="mad-widget-title">Support</h6>
+                        <nav class="vr-list mad-links-color2">
+                            <ul>
+                                <li>
+                                    <a href="#">Privacy Policy</a>
+                                </li>
+                                <li>
+                                    <a href="#">Delivery & Returns</a>
+                                </li>
+                                <li>
+                                    <a href="#">Terms and Conditions</a>
+                                </li>
+                                <li>
+                                    <a href="#">Help and FAQs</a>
+                                </li>
+                                <li>
+                                    <a href="#">Login</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="mad-footer-bottom">
+        <div class="container">
+            <div class="row justify-content-between align-items-center">
+                <div class="col">
+                    <p class="small">Copyright Kunstwerk © 2019. All Rights Reserved.</p>
+                </div>
+                <div class="col align-right">
+                    <a href="#">
+                        <img src="~/images/payment2.png" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</footer>
+
+</div>
+<script src="~/vendors/modernizr.js"></script>
+<script src="~/vendors/jquery-3.3.1.min.js"></script>
+<script src="~/vendors/jquery-ui/jquery-ui.min.js"></script>
+<script src="~/vendors/nicescroll/jquery.nicescroll.min.js"></script>
+<script src="~/vendors/jquery.easing.1.3.min.js"></script>
+@* <script src="~/vendors/instafeed.min.js"></script> *@
+@* <script src="~/vendors/instafeed.wrapper.min.js"></script> *@
+<script src="~/vendors/monkeysan.accordion.js"></script>
+<script src="~/vendors/monkeysan.tabs.min.js"></script>
+<script src="~/vendors/monkeysan-tooltip/monkeysan-jquery-tooltip.js"></script>
+<script src="~/vendors/owl-carousel/owl.carousel.min.js"></script>
+<script src="~/vendors/arcticmodal/jquery.arcticmodal-0.3.min.js"></script>
+<script src="~/vendors/fancybox/jquery.fancybox.min.js"></script>
+<script src="~/vendors/monkeysan.validator.min.js"></script>
+<script src="~/vendors/handlebars-v4.0.5.min.js"></script>
+<script src="~/vendors/retina.min.js"></script>
+<script src="~/js/modules/mad.alert-box.min.js"></script>
+<script src="~/vendors/mad.customselect.js"></script>
+<script src="~/js/modules/mad.newsletter-form.min.js"></script>
+<script src="~/js/modules/mad.sticky-header-section.min.js"></script>
+<script src="~/vendors/elevatezoom.min.js"></script>
+<script src="~/js/mad.app.js"></script>
+<script src="~/js/custom.js"></script>
+
+@if (IsSectionDefined("Scripts"))
+{
+    @await RenderSectionAsync("Scripts")
+}
+
+</body>
+</html>

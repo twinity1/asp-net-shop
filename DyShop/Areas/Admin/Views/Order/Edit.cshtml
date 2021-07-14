@@ -1,0 +1,252 @@
+@model DyShop.Areas.Admin.Models.OrderViewModel
+
+@{
+    ViewData["Title"] = $"Order #{Model.Id}";
+}
+
+<form method="post" id="orderForm">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="card-title"><h3>General</h3></div>
+            
+            Total price: @Model.TotalPrice Kč
+
+            <div class="form-group">
+                <label asp-for="Paid"></label>
+                <input asp-for="Paid"/>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="OrderStatus"></label>
+                <select class="form-control" asp-for="OrderStatus">
+                    @foreach (var status in Model.OrderStatusList)
+                    {
+                        <option value="@status">@status.ToString()</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="card-title"><h3>Delivery &amp; payment</h3></div>
+            <div id="deliverySection">
+                <div class="form-group">
+                    <label asp-for="DeliveryId">Delivery</label>
+                    <select id="deliverySelect" class="form-control" asp-for="DeliveryId">
+                        <option value="">--- Select ---</option>
+                        @foreach (var delivery in Model.Deliveries)
+                        {
+                            <option data-title="@delivery.Title" data-price="@delivery.Price" value="@delivery.Id">@delivery.Title</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="DeliveryTitle"></label>
+                    <input class="form-control" data-input-title="true" asp-for="DeliveryTitle"/>
+                    <span asp-validation-for="DeliveryTitle"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="DeliveryPrice"></label>
+                    <input class="form-control" data-input-price="true" asp-for="DeliveryPrice"/>
+                    <span asp-validation-for="DeliveryPrice"></span>
+                </div>
+            </div>
+
+            <div id="paymentSection">
+                <div class="form-group">
+                    <label asp-for="PaymentId">Payment</label>
+                    <select id="paymentSelect" class="form-control" asp-for="PaymentId">
+                        <option value="">--- Select ---</option>
+                        @foreach (var payment in Model.Payments)
+                        {
+                            <option data-title="@payment.Title" data-price="@payment.Price" value="@payment.Id">@payment.Title</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="PaymentTitle"></label>
+                    <input class="form-control" data-input-title="true" asp-for="PaymentTitle"/>
+                    <span asp-validation-for="PaymentTitle"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="PaymentPrice"></label>
+                    <input class="form-control" data-input-price="true" asp-for="PaymentPrice"/>
+                    <span asp-validation-for="PaymentPrice"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="row mb-4">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title"><h3>Billing address</h3></div>
+                    <partial name="_Address" for="BillingAddress"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title">
+                        <h3>
+                            Delivery address
+                            <input type="checkbox" asp-for="UseDeliveryAddress" id="useDeliveryAddress">
+                        </h3>
+                    </div>
+
+                    <div class="form-group">
+                        <span class="text-danger" asp-validation-for="UseDeliveryAddress"></span>
+                    </div>
+
+                    <div id="deliveryAddress">
+                        <partial name="_Address" for="DeliveryAddress"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="card-title"><h3>Products</h3></div>
+            @for (var i = 0; i < Model.Items.Count; i++)
+            {
+                <div class="orderItem">
+                    <h4>Product #@(i + 1)</h4>
+
+                    <div class="form-group">
+                        <label asp-for="Items[i].ProductId"></label>
+                        <select data-product-select="true" class="form-control" asp-for="Items[i].ProductId">
+                            <option value="">-- Select --</option>
+                            @foreach (var product in Model.Products)
+                            {
+                                <option data-price="@product.Price" data-title="@product.Title" value="@product.Id">@product.Title</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Items[i].Title"></label>
+                        <input data-input-title="true" class="form-control" asp-for="Items[i].Title"/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Items[i].Price"></label>
+                        <input data-input-price="true" class="form-control" asp-for="Items[i].Price"/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Items[i].Quantity"></label>
+                        <input class="form-control" asp-for="Items[i].Quantity"/>
+                    </div>
+
+                    <button class="btn btn-danger" data-remove-product="@i">Remove</button>
+
+                    <input type="hidden" asp-for="Items[i].Id"/>
+                </div>
+            }
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-secondary" asp-for="AddItem" id="addItem">Add new item</button>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" asp-for="Id" />
+    
+    <button class="btn btn-primary">Submit</button>
+</form>
+
+<script type="application/javascript">
+
+(function () {
+    const init = () => {
+        const bindPriceTitleChange = (selectSelector, parentSelector) => {
+          $("#orderForm").on("change", selectSelector, function () {
+                const val = $(this).val();
+                
+                const option = $(this).find(`option[value='${val}']`);
+                
+                const price = option.attr("data-price");
+                const title = option.attr("data-title");
+                
+                const parentEl = $(this).closest(parentSelector);
+                
+                parentEl.find("input[data-input-price]").val(price);
+                parentEl.find("input[data-input-title]").val(title);
+            });
+        };
+            
+        bindPriceTitleChange("select[data-product-select]", ".orderItem");
+        bindPriceTitleChange("#paymentSelect", "#paymentSection");
+        bindPriceTitleChange("#deliverySelect", "#deliverySection");
+        
+        const toggleDeliveryAddress = () => {
+            const checked = $("#useDeliveryAddress")[0].checked;
+            
+            if (checked) {
+                $("#deliveryAddress").show();
+            } else {
+                $("#deliveryAddress").hide();
+            }
+        };
+        
+        toggleDeliveryAddress();
+        
+        $("#useDeliveryAddress").change(function () {
+            toggleDeliveryAddress();
+        });
+        
+        $("#addItem").click(async function (e) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            
+            const data = new FormData(document.getElementById("orderForm"));
+            
+            const response = await fetch("@Url.Action("AddItem")", {
+                method: "POST",
+                body: data, 
+            }); 
+            
+            const html = await response.text();
+            
+            $("#pageContent").html(html);
+        });
+        
+        $("#orderForm").on("click", "button[data-remove-product]", async function (e) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            
+            const index = $(this).attr("data-remove-product");
+            
+            const data = new FormData(document.getElementById("orderForm"));
+            data.append("index", index);
+            
+            const response = await fetch("@Url.Action("RemoveItem")", {
+                method: "POST",
+                body: data, 
+            });
+    
+             const html = await response.text();
+                
+             $("#pageContent").html(html);
+        });
+    };
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        init();
+    });
+    
+    if (document.readyState === "complete" || document.readyState === "loaded") {
+        init();
+    }
+})();
+
+
+</script>

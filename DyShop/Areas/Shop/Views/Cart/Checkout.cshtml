@@ -1,0 +1,231 @@
+@model DyShop.Areas.Shop.Models.CartCheckoutViewModel
+
+@{
+    ViewData["Title"] = "Dokončení objednávky";
+}
+<div class="mad-content">
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+            <div class="content-element-2">
+                <div class="row type-3">
+                    <div class="col-lg-6">
+                        <h3 class="mad-page-title">Fakturační údaje</h3>
+                        <div class="form-group">
+                            <div class="form-col">
+                                <input type="text" asp-for="BillingAddress.Name" placeholder="Jméno, příjmení">
+                                <span class="text-danger" asp-validation-for="BillingAddress.Name"></span>
+                            </div>
+                            <div class="form-col">
+                                <input type="text" asp-for="BillingAddress.Street" placeholder="Ulice, číslo popisné">
+                                <span class="text-danger" asp-validation-for="BillingAddress.Street"></span>
+                            </div>
+                            <div class="form-col-4">
+                                <input type="text" asp-for="BillingAddress.ZipCode" placeholder="Poštovní směrovací číslo">
+                                <span class="text-danger" asp-validation-for="BillingAddress.ZipCode"></span>
+                            </div>
+                            <div class="form-col-8">
+                                <input type="text" asp-for="BillingAddress.City" placeholder="Město">
+                                <span class="text-danger" asp-validation-for="BillingAddress.City"></span>
+                            </div>
+                            <div class="form-col">
+                                <input type="text" asp-for="BillingAddress.Phone" placeholder="Telefon">
+                                <span class="text-danger" asp-validation-for="BillingAddress.Phone"></span>
+                            </div>
+                            <div class="form-col">
+                                <input type="text" asp-for="BillingAddress.Email" placeholder="Email">
+                                <span class="text-danger" asp-validation-for="BillingAddress.Email"></span>
+                            </div>
+                            <div class="form-col">
+                                <label asp-for="BillingAddress.Note">Poznámka</label>
+                                <textarea asp-for="BillingAddress.Note"></textarea>
+                                <span class="text-danger" asp-validation-for="BillingAddress.Note"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="checkbox-title">
+                            <input type="checkbox" class="type-2" asp-for="UseDeliveryAddress"/>
+                            <label asp-for="UseDeliveryAddress">Doručení na jinou adresu</label>
+                        </div>
+                        <div class="form-group" id="deliverySection" style="display: none">
+                            <div class="form-col">
+                                <input type="text" asp-for="DeliveryAddress.Name" placeholder="Jméno, příjmení">
+                                <span class="text-danger" asp-validation-for="DeliveryAddress.Name"></span>
+                            </div>
+                            <div class="form-col">
+                                <input type="text" asp-for="DeliveryAddress.Street" placeholder="Ulice, číslo popisné">
+                                <span class="text-danger" asp-validation-for="DeliveryAddress.Street"></span>
+                            </div>
+                            <div class="form-col-4">
+                                <input type="text" asp-for="DeliveryAddress.ZipCode" placeholder="Poštovní směrovací číslo">
+                                <span class="text-danger" asp-validation-for="DeliveryAddress.ZipCode"></span>
+                            </div>
+                            <div class="form-col-8">
+                                <input type="text" asp-for="DeliveryAddress.City" placeholder="Město">
+                                <span class="text-danger" asp-validation-for="DeliveryAddress.City"></span>
+                            </div>
+                            <div class="form-col">
+                                <input type="text" asp-for="DeliveryAddress.Phone" placeholder="Telefon">
+                                <span class="text-danger" asp-validation-for="DeliveryAddress.Phone"></span>
+                            </div>
+                            <div class="form-col">
+                                <input type="text" asp-for="DeliveryAddress.Email" placeholder="Email">
+                                <span class="text-danger" asp-validation-for="DeliveryAddress.Email"></span>
+                            </div>
+                            <div class="form-col">
+                                <label asp-for="DeliveryAddress.Note">Poznámka</label>
+                                <textarea asp-for="DeliveryAddress.Note"></textarea>
+                                <span class="text-danger" asp-validation-for="DeliveryAddress.Note"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-element-2">
+                <div class="content-element-3">
+                    <h3 class="mad-page-title">Shrnutí objednávky</h3>
+
+                    <div class="mad-table-wrap mad-checkout-form">
+                        <table>
+                            <thead>
+                            <tr class="bg">
+                                <th>Produkt</th>
+                                <th>Cena</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var item in Model.Cart.Items)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="mad-product">
+                                            <div class="mad-product-description">
+                                                <h5 class="mad-product-title">
+                                                    <a asp-controller="Product" asp-action="Detail" asp-route-slug="@item.Product.Slug">@item.Product.Title</a>
+                                                </h5>
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                    <td>@item.Price Kč</td>
+                                </tr>
+                            }
+                            <tr>
+                                <td>
+                                    <h5>Doprava</h5>
+                                </td>
+                                <td>
+                                    <div class="form-control">
+                                        <div class="mad-toggled-fields" style="display: block">
+                                            @foreach (var delivery in Model.Deliveries) 
+                                            {
+                                                <input data-control-refresh="true" type="radio" value="@delivery.Id" asp-for="DeliveryId" id="@delivery.Id-delivery"/>
+                                                <label class="mad-label-radio" for="@delivery.Id-delivery">@delivery.Title - @delivery.Price Kč</label>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>Platební metoda</h5>
+                                </td>
+                                <td>
+                                    <div class="form-control">
+                                        <div class="mad-toggled-fields" style="display: block">
+                                            @foreach (var payment in Model.Payments)
+                                            {
+                                                <input data-control-refresh="true" type="radio" value="@payment.Id" asp-for="PaymentId"/>
+                                                <label asp-for="PaymentId" class="mad-label-radio">@payment.Title - @payment.Price Kč</label>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td>
+                                    <h5 class="checkout-title">
+                                        <strong>Celkem</strong>
+                                    </h5>
+                                </td>
+                                <td>
+                                    <strong>@Model.TotalPrice Kč</strong>
+                                    <div class="loader" id="checkoutLoader" style="display: none"></div>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="content-element-3">
+                    <ul class="custom-list payment-option">
+                        <li>
+                            <div class="input-wrapper style-2">
+                                <input type="checkbox" asp-for="AcceptTermsAndConditions" class="type-2">
+                                <label asp-for="AcceptTermsAndConditions">
+                                    DOPLNIT Souhlasím s
+                                    <a href="#" class="link-color-3">
+                                        Obchodní podmínky
+                                    </a>
+                                </label>
+                                <span class="text-danger" asp-validation-for="AcceptTermsAndConditions"></span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div>
+                        <span class="text-danger" asp-validation-for="Cart"></span>
+                    </div>
+                    <button class="btn btn-big">Potvrdit objednávka</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="application/javascript">
+    (function() {
+        const init = () => {
+            $("*[data-control-refresh]").change(async function() {
+                $("#checkoutLoader").show();
+                
+                const response = await fetch("@Url.Action("RefreshCheckout")", {
+                    method: "POST",
+                    body: new FormData($(this).closest("form")[0]),
+                });
+                
+                const html = await response.text();
+                
+                $("#pageContent").html(html);
+                
+                $("#checkoutLoader").hide();
+            });
+            
+            const checkDeliveryAddress = () => {
+                const show = $("#UseDeliveryAddress")[0].checked;
+                
+                if (show) {
+                    $("#deliverySection").show();
+                } else {
+                    $("#deliverySection").hide();
+                }
+            }; 
+            
+            checkDeliveryAddress();
+            
+            $("#UseDeliveryAddress").change(function () {
+                checkDeliveryAddress();
+            });
+        };
+        
+        if (document.readyState === "complete" || document.readyState === "loaded") {
+            init();
+        } else {
+            document.addEventListener("DOMContentLoaded", function () {
+                init();
+            });
+        }
+    })();
+</script>

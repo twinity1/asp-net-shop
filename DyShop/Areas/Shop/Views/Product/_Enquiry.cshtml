@@ -1,0 +1,50 @@
+@model DyShop.Areas.Shop.Models.ProductEnquiryModel
+
+<h5 class="mad-page-title">Dotaz ohledně tohoto produktu.</h5>
+<p>Vaše emailová adresa nebude nikde zveřejněna.</p>
+<form class="mad-msg-form form-size-small" id="productEnquiryForm">
+    <input id="comment_name" asp-for="Name" class="form-control" placeholder="Jméno">
+    <span asp-validation-for="Name" class="text-danger"></span>
+    <input id="comment_email" asp-for="Email" class="form-control" placeholder="Email">
+    <span asp-validation-for="Email" class="text-danger"></span>
+    <input id="comment_message" asp-for="Question" class="form-control" placeholder="Zpráva">
+    <span asp-validation-for="Question" class="text-danger"></span>
+    <div>
+        <button type="submit" id="productEnquirySubmit" class="btn btn-style-3">Odeslat</button>
+    </div>
+</form>
+
+<script type="application/javascript">
+    (function() {
+        const init = () => {
+            $("#productEnquirySubmit").click(async function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData($(this).closest("form")[0]);
+                
+                formData.append("url", window.location.href);
+                
+                const response = await fetch("@Url.Action("Enquiry")", {
+                    method: "POST",
+                    body: formData,
+                });
+                
+                const html = await response.text();
+                
+                $("#productEnquiry").html(html);
+                
+                setTimeout(() => {
+                    window.dispatchEvent(new Event('resize'));
+                }, 0);
+            });
+        };
+        
+        if (document.readyState === "complete" || document.readyState === "loaded") {
+            init();
+        } else {
+            document.addEventListener("DOMContentLoaded", function () {
+                init();
+            });
+        }
+    })();
+</script>

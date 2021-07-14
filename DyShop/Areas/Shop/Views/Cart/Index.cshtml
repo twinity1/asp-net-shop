@@ -1,0 +1,150 @@
+@model DyShop.Areas.Shop.Models.CartIndexViewModel
+
+@{
+    ViewData["Title"] = "Košík";
+    var hasProducts = Model.Cart.Items.Any();
+}
+
+<div class="mad-content">
+    <div class="container">
+        <div class="content-element-2" style="margin-bottom: 16px">
+            <div class="mad-table-wrap shop-cart-form">
+                <table class="mad-table--responsive-md">
+                    <thead>
+                    <tr class="bg">
+                        <th>Název produktu</th>
+                        <th>Cena</th>
+                        <th>Počet</th>
+                        <th>Celková cena</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if (hasProducts == false)
+                    {
+                        <tr>
+                            <td colspan="4">V košík nejsou žádné produkty..</td>
+                        </tr>
+                    }
+                    @foreach (var cartItem in Model.Cart.Items)
+                    {
+                        <tr>
+                            <td class="shopping-cart-full" data-cell-title="Product">
+                                <div class="mad-products mad-product-small">
+                                    <div class="mad-col">
+                                        <div class="mad-product">
+                                            <button class="mad-close-item" data-id="@cartItem.Id">
+                                                <i class="licon-cross-circle"></i>
+                                            </button>
+                                            <a asp-controller="Product" asp-action="Detail" asp-route-slug="@cartItem.Product.Slug" class="mad-product-image">
+                                                <img src="~/@cartItem.Product.MainPhoto.SavePath" alt="@cartItem.Product.Title">
+                                            </a>
+
+                                            <div class="mad-product-description">
+                                                <h5 class="mad-product-title">
+                                                    <a asp-controller="Product" asp-action="Detail" asp-route-slug="@cartItem.Product.Slug">@cartItem.Product.Title</a>
+                                                </h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td data-cell-title="Price">@cartItem.Product.Price Kč</td>
+                            <td data-cell-title="Quantity">
+                                <div class="mad-product mad-product-single">
+                                    <div class="quantity">
+                                        <input class="quantityInput" data-id="@cartItem.Id" type="text" value="@cartItem.Quantity" readonly="readonly">
+                                        <button type="button" class="qty-plus">
+                                            <i class="licon-plus"></i>
+                                        </button>
+                                        <button type="button" class="qty-minus" data-allow-zero="true">
+                                            <i class="licon-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </td>
+                            <td data-cell-title="Total">@cartItem.Price Kč</td>
+                        </tr>
+                    }
+                    </tbody>
+                    <tfoot>
+                    <td>Celkem</td>
+                    <td colspan="3">@Model.Cart.TotalPrice() Kč</td>
+                    </tfoot>
+                </table>
+            </div>
+
+        </div>
+        @if (hasProducts)
+        {
+            <div class="content-element-2">
+                <div class="align-right">
+                    <a asp-controller="Cart" asp-action="Checkout" class="btn btn-huge">Pokračovat</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        let changes = {};
+        let timeout = null;
+        
+        let pageContentEl = $("#pageContent");
+        
+        pageContentEl.on("click", ".qty-plus, .qty-minus", function () {
+            $(this).closest(".quantity").find(".quantityInput").change();
+        });
+        
+        $(".mad-close-item").click(function () {
+            const data = {};
+            data[$(this).attr("data-id")] = 0;
+            
+            modifyQuantity(data);
+        });
+        
+        pageContentEl.on("change", ".quantityInput", async function() {
+            const value = $(this).val();
+            const cartItemId = $(this).attr("data-id");
+            
+            changes[cartItemId] = value;
+            
+            clearTimeout(timeout);
+            timeout = null;
+            timeout = setTimeout(async () => {
+                modifyQuantity(changes);
+                changes = [];
+            }, 2000);
+        });
+        
+        async function modifyQuantity(changes) {
+            let changeRequests = [];
+            
+            Object.keys(changes).forEach(k => {
+                changeRequests.push({
+                    cartItemId: k, 
+                    quantity: changes[k], 
+                });
+            });
+            
+            const resp = await fetch("@Url.Action("Quantity")", {
+                method: "PUT",
+                headers: {
+                    Accept: "application/json",
+                    "Content-type": "application/json",
+                },
+                body: JSON.stringify({
+                    changeRequests: changeRequests,
+                }),
+            });
+            
+            if (resp.status !== 200) {
+                alert("Něco se pokazilo, zkuste akci opakovat.");
+            }  else {
+                pageContentEl.html(await resp.text());
+                setTimeout(() => { initQuantity(); }, 0);
+            }
+        }; 
+    });
+</script>

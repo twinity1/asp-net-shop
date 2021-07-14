@@ -1,0 +1,318 @@
+@using DyShop.Helpers.Html
+@using Humanizer
+@using DyShop.Areas.Shop.Models
+@model DyShop.Areas.Shop.Models.ProductDetailViewModel
+
+@{
+    ViewData["Title"] = Model.Product.Title;
+    var mainPhoto = Model.Product.MainPhoto;
+    var secondaryPhotos = Model.Product.SecondaryPhotos;
+    var productGroup = Model.ProductGroups;
+    var allCategories = Model.Product.AllCategories;
+    
+    ViewData.HideHeading();
+}
+
+<div class="mad-content">
+<div class="container">
+<div class="content-element-2">
+
+<div class="mad-product mad-product-single">
+    <div class="row mad-row-size-3">
+        <div class="col-lg-6">
+            <div class="image-preview-container">
+
+                <div class="image-preview">
+                    <a href="~/@mainPhoto.SavePath" data-zoom-image="~/@mainPhoto.SavePath" data-fancybox="group">
+                        <img id="zoom-image" src="~/@mainPhoto.SavePath?width=640" alt="~/@Model.Product.Title">
+                    </a>
+                </div>
+
+                @if (secondaryPhotos.Count != 0)
+                {
+                    <div class="owl-carousel mad-product-thumbs mad-grid mad-grid--cols-3 no-dots mad-owl-nav" id="thumbnails">
+                        @foreach (var photo in secondaryPhotos)
+                        {
+                            <div class="mad-grid-item">
+                                <a href="~/@photo.SavePath" data-image="~/@photo.SavePath" data-zoom-image="~/@photo.SavePath">
+                                    <img src="~/@photo.SavePath?width=200&quality=85" alt="~/@Model.Product.Title">
+                                </a>
+                            </div>   
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="product-description">
+                <h1 class="mad-page-title">@Model.Product.Title</h1>
+                <div class="mad-product-price">@Model.Product.Price Kč</div>
+                <p>
+                    @Model.Product.Description
+                </p>
+                <form class="add-to-cart-form">
+                    @if (productGroup.Count > 1)
+                    {
+                        <div class="product-actions">
+                            <span>Varianta:</span>
+                            <div class="mad-custom-select">
+                                <select id="variantSelect" data-default-text="@Model.Product.Title">
+                                    @foreach (var productVariant in productGroup)
+                                    {
+                                        <option value="@Url.Action("Detail", new {productVariant.Slug})">@productVariant.Title</option> 
+                                    }
+                                </select>
+                            </div>
+                        </div>     
+                    }
+                    <div class="product-actions">
+                        <span>Počet:</span>
+                        <div class="quantity">
+                            <input asp-for="Quantity" id="quantityInput" type="text" value="1" readonly="readonly">
+                            <button type="button" class="qty-plus">
+                                <i class="licon-plus"></i>
+                            </button>
+                            <button type="button" class="qty-minus">
+                                <i class="licon-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="btn btn-big" id="addToCartBtn">Přidat do košíku</button>
+                    <div style="display: none" id="addToCartBtnLoader" class="loader ml150">Loading...</div>
+                </form>
+                <ul class="product-meta">
+                    <li>
+                        <span>Kategorie:</span>
+                        @for (var i = 0; i < allCategories.Count; i++)
+                        {
+                            <a href="#" class="link-color-3">@allCategories[i].Title</a>
+                            @if (allCategories.Count != i + 1)
+                            {
+                                <span>, </span>
+                            }
+                        }
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="mad-tabs">
+
+<div role="tablist" aria-label="Tabs v1" class="mad-tabs-nav">
+    <span class="mad-active">
+        <a id="tab-1-link" href="#tab-1" role="tab" aria-selected="false" aria-controls="tab-1" class="mad-ln--independent mad-tab-link">Popis</a>
+    </span>
+    <span>
+        <a id="tab-2-link" href="#tab-2" role="tab" aria-selected="true" aria-controls="tab-2" class="mad-ln--independent mad-tab-link">Informace navíc</a>
+    </span>
+    <span>
+        <a id="tab-3-link" href="#tab-3" role="tab" aria-selected="true" aria-controls="tab-3" class="mad-ln--independent mad-tab-link">Dotaz</a>
+    </span>
+</div>
+
+
+<div class="mad-tabs-container">
+
+<div id="tab-1" role="tabpanel" aria-labelledby="tab-1-link" class="mad-tab">
+    <p>
+        @Model.Product.Description
+    </p>
+</div>
+
+<div id="tab-2" role="tabpanel" aria-labelledby="tab-2-link" class="mad-tab">
+
+    <table class="mad-table mad-table--vertical">
+        <tbody>
+        @foreach (var group in Model.GroupParameters)
+        {
+            <tr>
+                <th>@group.Title</th>
+                <td>@group.Parameters.Humanize()</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+</div>
+
+<div id="tab-3" role="tabpanel" aria-labelledby="tab-3-link" class="mad-tab">
+    <div class="row">
+        <div class="col-lg-6">
+            <div id="productEnquiry">
+                <partial name="_Enquiry" model="@(new ProductEnquiryModel())"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="content-element-2">
+    <h3 class="mad-page-title">Related Products</h3>
+
+    <div class="mad-products item-col-4">
+        <div class="mad-col">
+
+            <div class="mad-product">
+                <figure class="mad-product-image">
+                    <a href="#">
+                        <img src="images/261x259_product12.jpg" alt="">
+                    </a>
+                    <div class="overlay">
+                        <a href="#" class="btn">Add to Cart</a>
+                    </div>
+                </figure>
+
+                <div class="mad-product-description">
+                    <h5 class="mad-product-title">
+                        <a href="#">Robyn Earrings</a>
+                    </h5>
+                    <span class="mad-product-price">$205.00</span>
+                    <div class="rating-holder">
+                        <div data-estimate="5" class="mad-rating"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="mad-col">
+
+            <div class="mad-product">
+                <figure class="mad-product-image">
+                    <a href="#">
+                        <img src="images/261x259_product13.jpg" alt="">
+                    </a>
+                    <div class="overlay">
+                        <a href="#" class="btn">Add to Cart</a>
+                    </div>
+                </figure>
+
+                <div class="mad-product-description">
+                    <h5 class="mad-product-title">
+                        <a href="#">XS Dominique Posts</a>
+                    </h5>
+                    <span class="mad-product-price">$138.00</span>
+                    <div class="rating-holder">
+                        <div data-estimate="4" class="mad-rating"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="mad-col">
+
+            <div class="mad-product">
+                <figure class="mad-product-image">
+                    <a href="#">
+                        <img src="images/261x259_product14.jpg" alt="">
+                    </a>
+                    <div class="overlay">
+                        <a href="#" class="btn">Add to Cart</a>
+                    </div>
+                </figure>
+
+                <div class="mad-product-description">
+                    <h5 class="mad-product-title">
+                        <a href="#">Dominique Pendant</a>
+                    </h5>
+                    <span class="mad-product-price">$280.00</span>
+                    <div class="rating-holder">
+                        <div data-estimate="4" class="mad-rating"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="mad-col">
+
+            <div class="mad-product">
+                <figure class="mad-product-image">
+                    <a href="#">
+                        <img src="images/261x259_product15.jpg" alt="">
+                    </a>
+                    <div class="overlay">
+                        <a href="#" class="btn">Add to Cart</a>
+                    </div>
+                </figure>
+
+                <div class="mad-product-description">
+                    <h5 class="mad-product-title">
+                        <a href="#">Rockless Dominique Earrings</a>
+                    </h5>
+                    <span class="mad-product-price">$295.00</span>
+                    <div class="rating-holder">
+                        <div data-estimate="4" class="mad-rating"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function () {
+             $("#variantSelect").change(function () {
+                 window.location.href = $(this).val();
+             });
+             
+             let addToCartBtn = $("#addToCartBtn");
+             addToCartBtn.click(async function (e) {
+                 e.preventDefault();
+                 
+                 let addToCartBtnLoader = $("#addToCartBtnLoader");
+                 
+                 addToCartBtnLoader.show();
+                 addToCartBtn.hide();
+                 
+                 const request = await fetch("@Url.Action("Add", "Cart")", {
+                     method: "POST",
+                      headers: {
+                       'Accept': 'application/json',
+                       'Content-Type': 'application/json'
+                     },
+                     body: JSON.stringify({
+                        Slug: "@Model.Product.Slug",
+                        Quantity: $("#quantityInput").val(),
+                     }),
+                 });
+                 
+                 const data = await request.json();
+                 
+                 if (data.success) {
+                    $("#miniCart").html(data.cartHtml);
+                    
+                      setInterval(() => {
+                        $("#cartAddAlert").hide();
+                      }, 3000);
+                      
+                    addToCartBtnLoader.hide();
+                    addToCartBtn.show();
+                 } else {
+                     alert(data.message);
+                 }
+                  
+                 $("#openCartBtn").click();
+                 $("#cartAddAlert").show();
+                  
+
+                  
+             });
+        });
+    </script>
+}

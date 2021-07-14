@@ -1,0 +1,31 @@
+@model DyShop.Areas.Shop.Views.Shared.Components.Paginator.PaginatorViewModel
+
+@if (Model.Pages.Count > 1)
+{
+    <ul class="mad-pagination justify-content-center">
+        @if (Model.PreviousPage != null)
+        {
+            <li><a asp-route-page="@Model.PreviousPage" class="prev page-numbers"><span class="licon-arrow-left"></span></a></li>
+        }
+  
+        @foreach (var pageNumber in Model.Pages)
+        {
+            <li>
+                @if (pageNumber == Model.CurrentPage)
+                {
+                    <span class="page-numbers current">@pageNumber</span>
+                }
+                else
+                {
+                    <a asp-route-page="@pageNumber" class="page-numbers">@pageNumber</a>
+                }
+            </li>
+        } 
+  
+        @if (Model.NextPage != null)
+        {
+            <li><a asp-route-page="@Model.NextPage" class="next page-numbers"><span class="licon-arrow-right"></span></a></li>
+        }
+    </ul>
+}
+

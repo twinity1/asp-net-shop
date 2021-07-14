@@ -1,0 +1,197 @@
+@using DyShop.Helpers.Sorting
+@using DyShop.Helpers.Html
+@model DyShop.Areas.Shop.Models.ProductIndexViewModel
+@addTagHelper *, DyShop
+
+@{
+    ViewData["Title"] = "Produkty";
+    ViewData.HideHeading();
+
+  var bottomCount = (Model.Page - 1) * Model.MaxPerPage + 1;
+  var upperCount = bottomCount + Model.Products.Count - 1;
+}
+
+<div class="mad-content">
+  <div class="container">
+    <form method="get" id="productFilterForm">
+    <div class="row mad-row-size-3">
+      <main id="main" class="col-xl-9 col-lg-8">
+        <div class="product-sort-section">
+          <div class="mad-col">
+            <span>Zobrazeno @bottomCount–@upperCount z @Model.Count produktů</span>
+          </div>
+          <div class="mad-col">
+            <div class="mad-custom-select">
+              <select data-refresh="true" asp-for="Sort" data-default-text="@Model.Sortings[Sorting.Default]" style="display: none">
+                @foreach (var pair in Model.Sortings)
+                {
+                  <option value="@pair.Key">@pair.Value</option>
+                }
+              </select>
+            </div>
+          </div>
+        </div>
+
+        @if (Model.Products.Count != 0) {
+          <div class="mad-products item-col-3">
+            @foreach (var product in Model.Products)
+            {
+              <div class="mad-col">
+                <vc:product model="product"/>
+              </div>
+            }
+          </div>
+          
+          <vc:paginator count="Model.Count" page="Model.Page" per-page="Model.MaxPerPage"/>
+        }
+        else
+        {
+          <div><span class="font-weight-light">Žádný produkty nebyly nalezeny.</span>  <a asp-action="Index">Zrušit filtry.</a></div>
+        }
+
+      </main>
+      <aside id="sidebar" class="col-xl-3 col-lg-4">
+        <div class="mad-widget">
+          <h6 class="mad-widget-title">Categories</h6>
+          <ul class="mad-category-list mad-slide-menu checkbox-list">
+            @for (var i = 0; i < Model.Categories.Count; i++)
+            {
+              <li class="checkbox-list__item">
+                <div>
+                  <input data-refresh="true" type="checkbox" asp-for="CategorySelect[i].Checked"/>
+                  <label asp-for="CategorySelect[i].Checked" class="mad-label-checkbox">@Model.Categories[i].Title</label>
+                  <input type="hidden" asp-for="CategorySelect[i].Id" value="@Model.Categories[i].Id" />
+                </div>
+              </li>
+            }
+          </ul>
+        </div>
+        <div class="mad-widget">
+          <h6 class="mad-widget-title">Cena</h6>
+          <div class="mad-range-slider-field">
+            <div class="mad-range-slider" id="priceSlider"></div>
+            <input type="text" asp-for="PriceFrom" id="priceFrom" class="d-none" />
+            <input type="text" asp-for="PriceTo" id="priceTo" class="d-none" />
+          </div>
+        </div>
+        @{ var parameterIndex = 0; }
+        
+        @foreach (var group in Model.ParameterGroups)
+        {
+          <div class="mad-widget">
+            <h6 class="mad-widget-title">@group.Title</h6>
+            <ul class="mad-category-list mad-slide-menu checkbox-list">
+              @foreach (var parameter in group.Parameters.OrderBy(x => x.Title))
+              {
+                <li class="checkbox-list__item">
+                  <div>
+                    <input data-refresh="true" type="checkbox" asp-for="ParameterSelect[parameterIndex].Checked"/>
+                    <label asp-for="ParameterSelect[parameterIndex].Checked" class="mad-label-checkbox">@parameter.Title</label>
+                    <input type="hidden" asp-for="ParameterSelect[parameterIndex].Id" value="@parameter.Id" />
+                  </div>
+                  @{ parameterIndex++; }
+                </li>
+              }
+            </ul>
+          </div>
+        }
+        
+        <div class="mad-widget">
+          <h6 class="mad-widget-title">Products</h6>
+          <div class="mad-products mad-product-small">
+            <div class="mad-col">
+              <div class="mad-product">
+                <a href="#" class="mad-product-image" style="background-position: 0% 69px">
+                  <img src="images/70x70_product3.jpg" alt="">
+                </a>
+
+                <div class="mad-product-description">
+                  <h5 class="mad-product-title"><a href="#" style="background-position: 0% 20px">Set of 3 Uno Rings</a></h5>
+                  <span class="mad-product-price">$144.00</span>
+                </div>
+              </div>
+
+            </div>
+            <div class="mad-col">
+
+              <div class="mad-product">
+                <a href="#" class="mad-product-image" style="background-position: 0% 71px">
+                  <img src="images/70x70_product1.jpg" alt="">
+                </a>
+
+                <div class="mad-product-description">
+                  <h5 class="mad-product-title"><a href="#" style="background-position: 0% 20px">Cosy Toddler Pillow</a></h5>
+                  <span class="mad-product-price">$57.00</span>
+                </div>
+
+              </div>
+
+            </div>
+            <div class="mad-col">
+              <div class="mad-product">
+                <a href="#" class="mad-product-image" style="background-position: 0% 69px">
+                  <img src="images/70x70_product2.jpg" alt="">
+                </a>
+
+                <div class="mad-product-description">
+                  <h5 class="mad-product-title"><a href="#" style="background-position: 0% 20px">Steel Coffee Table</a></h5>
+                  <span class="mad-product-price"><span>$539.00</span> $499.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mad-widget">
+          <h6 class="mad-widget-title">Like Us on Facebook</h6>
+          <div data-tabs="" data-href="https://www.facebook.com/envato" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true" class="fb-page">
+            <blockquote cite="https://www.facebook.com/envato" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/envato" style="background-position: 0% 27px">Envato</a></blockquote>
+          </div>
+          <script id="facebook-jssdk" src="//connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v2.7"></script><script>(function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.7"; fjs.parentNode.insertBefore(js, fjs); }(document, 'script', 'facebook-jssdk'));</script>
+        </div>
+        <div class="mad-widget">
+          <h6 class="mad-widget-title">Tags</h6>
+          <div class="tagcloud">
+            <a href="#" class="mad-ln--independent" style="background-position: 0% 29px">accessory</a>
+            <a href="#" class="mad-ln--independent" style="background-position: 0% 29px">craft room</a>
+            <a href="#" class="mad-ln--independent" style="background-position: 0% 29px">furniture</a>
+            <a href="#" class="mad-ln--independent" style="background-position: 0% 29px">handmade</a>
+            <a href="#" class="mad-ln--independent" style="background-position: 0% 29px">interior</a>
+            <a href="#" class="mad-ln--independent" style="background-position: 0% 29px">jewelry</a>
+            <a href="#" class="mad-ln--independent" style="background-position: 0% 29px">steel</a>
+            <a href="#" class="mad-ln--independent" style="background-position: 0% 29px">tips</a>
+            <a href="#" class="mad-ln--independent" style="background-position: 0% 29px">wood</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+    </form>
+  </div>
+</div>
+  
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+      const refresh = () => $("#productFilterForm")[0].submit();
+  
+      $("*[data-refresh='true']").change(function () {
+        refresh();
+      });
+      
+      let priceFromInput = $("#priceFrom"); 
+      let priceToInput = $("#priceTo"); 
+      
+      $("#priceSlider").slider({
+          range: true,
+          min: @Model.PriceRangeFrom,
+          max: @Model.PriceRangeTo,
+          values: [@Model.PriceFrom, @Model.PriceTo],
+          change: function (event, ui) {
+            priceFromInput.val($(this).slider('values', 0));
+            priceToInput.val($(this).slider('values', 1));
+            
+            setTimeout(() => {
+              refresh();
+            }, 0);
+          }
+  });
+});
+</script>

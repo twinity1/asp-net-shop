@@ -1,0 +1,28 @@
+@using GridMvc
+@using DyShop.Helpers.Html
+@model IQueryable<DyShop.Data.Entities.Order>
+
+@{
+    ViewData["Title"] = "Objednávky";
+}
+
+@{
+    var grid = Html.Grid(Model).Columns(columns =>
+    {
+        columns.Add(x => x.Id);
+        columns.Add(x => x.BillingAddress.Name);
+        columns.Add(x => x.TotalPrice);
+        columns.Add(x => x.BillingAddress.City);
+        columns.Add(x => x.BillingAddress.Street);
+        columns.Add(x => x.CreatedAt);
+        columns.Add()
+            .Sanitized(false)
+            .Encoded(false)
+            .RenderValueAs(x => Html.Partial("_GridAction", x).GetString());
+    }).Filterable().Sortable();
+
+    grid.RenderOptions.GridCountDisplayName = "Total item count";
+    grid.RenderOptions.ShowGridItemsCount = true;
+}
+
+@grid

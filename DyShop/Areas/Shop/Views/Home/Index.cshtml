@@ -1,0 +1,329 @@
+﻿@addTagHelper *, DyShop
+@using DyShop.Helpers.Html
+@model DyShop.Areas.Shop.Models.HomeViewModel
+
+@{
+    ViewData["Title"] = "Úvod";
+    ViewData.HideBreadcrumbs();
+}
+
+    <div class="media-holder">
+      <div class="container">
+        <div class="media-inner">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="mad-image-box-media">
+                <div class="owl-carousel mad-grid no-dots mad-simple-slideshow mad-simple-slideshow--autoplay">
+                  <img src="images/662x918_img1.jpg" alt="">
+                  <img src="images/662x918_img2.jpg" alt="">
+                  <img src="images/662x918_img3.jpg" alt="">
+                  <img src="images/662x918_img4.jpg" alt="">
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="media-content">
+                <div class="media-content-text">
+                  <div class="mad-subtitle">unique accessories</div>
+                  <h1 class="madia-title">Title!</h1>
+                  <a href="#" class="btn with-line btn-big"><span>shop now<i class="licon-minus"></i></span></a>
+                </div>
+                <div class="media-content-img">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="mad-image-box-media with-button to-right">
+                        <a href="#" class="img-holder"><img src="images/317x427_img1.jpg" alt=""></a>
+                        <a href="#" class="read-more">Our Story</a>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="mad-image-box-media to-right">
+                        <a href="#" class="img-holder"><img src="images/317x371_img1.jpg" alt=""></a>
+                        <a href="#" class="read-more">Shop By Gemstone</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+        <div class="mad-content no-pd dots-home-2">
+          <div class="container">
+            <div class="mad-section mad-section--stretched mad-colorizer--scheme-color-2">
+              <h3 class="mad-page-title align-center">Featured Products</h3>
+              <div class="mad-grid owl-carousel mad-products owl-dots mad-grid--cols-4">
+                  @foreach (var product in Model.FeaturedProducts)
+                  {
+                    <div class="mad-grid-item">
+                        <vc:product model="@product"/>
+                    </div>
+                  }
+              </div>
+            </div>
+            <div class="mad-section no-pb">
+              <h3 class="mad-page-title align-center">Most Popular Products</h3>
+              <div class="mad-products item-col-4">
+                <div class="mad-col">
+                  <!-- Product -->
+                  <div class="mad-product">
+                    <figure class="mad-product-image">
+                      <div class="mad-label new">New</div>
+                      <a href="#"><img src="images/261x259_product8.jpg" alt=""></a>
+                      <div class="overlay">
+                        <a href="#" class="btn">Add to Cart</a>
+                      </div>
+                    </figure>
+                    <!-- product-info -->
+                    <div class="mad-product-description">
+                      <h5 class="mad-product-title"><a href="#">Set of 3 Uno Rings</a></h5>
+                      <span class="mad-product-price">$144.00</span>
+                      <div class="rating-holder">
+                        <div data-estimate="4" class="mad-rating"></div>
+                      </div>
+                    </div>
+                    <!--/ product-info -->
+                  </div>
+                  <!-- End of Product -->
+                </div>
+                <div class="mad-col">
+                  <!-- Product -->
+                  <div class="mad-product">
+                    <figure class="mad-product-image">
+                      <a href="#"><img src="images/261x259_product9.jpg" alt=""></a>
+                      <div class="overlay">
+                        <a href="#" class="btn">Add to Cart</a>
+                      </div>
+                    </figure>
+                    <!-- product-info -->
+                    <div class="mad-product-description">
+                      <h5 class="mad-product-title"><a href="#">Rock Star Nugget Pendant</a></h5>
+                      <span class="mad-product-price">$193.00</span>
+                      <div class="rating-holder">
+                        <div data-estimate="5" class="mad-rating"></div>
+                      </div>
+                    </div>
+                    <!--/ product-info -->
+                  </div>
+                  <!-- End of Product -->
+                </div>
+                <div class="mad-col">
+                  <!-- Product -->
+                  <div class="mad-product">
+                    <figure class="mad-product-image">
+                      <a href="#"><img src="images/261x259_product10.jpg" alt=""></a>
+                      <div class="overlay">
+                        <a href="#" class="btn">Add to Cart</a>
+                      </div>
+                    </figure>
+                    <!-- product-info -->
+                    <div class="mad-product-description">
+                      <h5 class="mad-product-title"><a href="#">Jerin Earrings</a></h5>
+                      <span class="mad-product-price">$129.00</span>
+                      <div class="rating-holder">
+                        <div data-estimate="3" class="mad-rating"></div>
+                      </div>
+                    </div>
+                    <!--/ product-info -->
+                  </div>
+                  <!-- End of Product -->
+                </div>
+                <div class="mad-col">
+                  <!-- Product -->
+                  <div class="mad-product">
+                    <figure class="mad-product-image">
+                      <a href="#"><img src="images/261x259_product11.jpg" alt=""></a>
+                      <div class="overlay">
+                        <a href="#" class="btn">Add to Cart</a>
+                      </div>
+                    </figure>
+                    <!-- product-info -->
+                    <div class="mad-product-description">
+                      <h5 class="mad-product-title"><a href="#">5-Stone Sandalwood Bracelet</a></h5>
+                      <span class="mad-product-price">$105.00</span>
+                      <div class="rating-holder">
+                        <div data-estimate="4" class="mad-rating"></div>
+                      </div>
+                    </div>
+                    <!--/ product-info -->
+                  </div>
+                  <!-- End of Product -->
+                </div>
+                <div class="mad-col">
+                  <!-- Product -->
+                  <div class="mad-product">
+                    <figure class="mad-product-image">
+                      <a href="#"><img src="images/261x259_product12.jpg" alt=""></a>
+                      <div class="overlay">
+                        <a href="#" class="btn">Add to Cart</a>
+                      </div>
+                    </figure>
+                    <!-- product-info -->
+                    <div class="mad-product-description">
+                      <h5 class="mad-product-title"><a href="#">Robyn Earrings</a></h5>
+                      <span class="mad-product-price">$205.00</span>
+                      <div class="rating-holder">
+                        <div data-estimate="5" class="mad-rating"></div>
+                      </div>
+                    </div>
+                    <!--/ product-info -->
+                  </div>
+                  <!-- End of Product -->
+                </div>
+                <div class="mad-col">
+                  <!-- Product -->
+                  <div class="mad-product">
+                    <figure class="mad-product-image">
+                      <a href="#"><img src="images/261x259_product13.jpg" alt=""></a>
+                      <div class="overlay">
+                        <a href="#" class="btn">Add to Cart</a>
+                      </div>
+                    </figure>
+                    <!-- product-info -->
+                    <div class="mad-product-description">
+                      <h5 class="mad-product-title"><a href="#">XS Dominique Posts</a></h5>
+                      <span class="mad-product-price">$138.00</span>
+                      <div class="rating-holder">
+                        <div data-estimate="4" class="mad-rating"></div>
+                      </div>
+                    </div>
+                    <!--/ product-info -->
+                  </div>
+                  <!-- End of Product -->
+                </div>
+                <div class="mad-col">
+                  <!-- Product -->
+                  <div class="mad-product">
+                    <figure class="mad-product-image">
+                      <a href="#"><img src="images/261x259_product14.jpg" alt=""></a>
+                      <div class="overlay">
+                        <a href="#" class="btn">Add to Cart</a>
+                      </div>
+                    </figure>
+                    <!-- product-info -->
+                    <div class="mad-product-description">
+                      <h5 class="mad-product-title"><a href="#">Dominique Pendant</a></h5>
+                      <span class="mad-product-price">$280.00</span>
+                      <div class="rating-holder">
+                        <div data-estimate="4" class="mad-rating"></div>
+                      </div>
+                    </div>
+                    <!--/ product-info -->
+                  </div>
+                  <!-- End of Product -->
+                </div>
+                <div class="mad-col">
+                  <!-- Product -->
+                  <div class="mad-product">
+                    <figure class="mad-product-image">
+                      <a href="#"><img src="images/261x259_product15.jpg" alt=""></a>
+                      <div class="overlay">
+                        <a href="#" class="btn">Add to Cart</a>
+                      </div>
+                    </figure>
+                    <!-- product-info -->
+                    <div class="mad-product-description">
+                      <h5 class="mad-product-title"><a href="#">Rockless Dominique Earrings</a></h5>
+                      <span class="mad-product-price">$295.00</span>
+                      <div class="rating-holder">
+                        <div data-estimate="4" class="mad-rating"></div>
+                      </div>
+                    </div>
+                    <!--/ product-info -->
+                  </div>
+                  <!-- End of Product -->
+                </div>
+              </div>
+            </div>
+            <div class="mad-join-us full-width push-bottom mad-colorizer--scheme-color-6">
+              <div class="mad-colorizer-bg-color"><img class="svg mad-pattern" src="images/background_pattern.svg" alt=""></div>
+              <div class="row align-items-center">
+                <div class="col-lg-5">
+                  <h4 class="mad-title">Join Our Newsletter</h4>
+                  <p>Get the latest updates on new products and upcoming sales</p>
+                </div>
+                <div class="col-lg-7">
+                  <form class="mad-newsletter-form style-2">
+                    <input type="email" name="email" placeholder="Your email address">
+                    <button type="submit"><i class="icon licon-envelope"></i></button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="mad-section mad-section--stretched mad-colorizer--scheme-color-5">
+              <h3 class="mad-page-title align-center">Latest News</h3>
+              <!--================ Image Boxes (Style 1) ================-->
+              <div class="mad-image-boxes item-col-3">
+                <div class="mad-col">
+                  <!--================ Image Box ================-->
+                  <div class="mad-image-box">
+                    <div class="mad-image-box-media"><a href="#" class="mad-ln--independent"><img src="images/432x308_img1.jpg"
+                          alt=""></a></div>
+                    <div class="image-box-content">
+                      <div class="mad-box-meta">
+                        <time datetime="2019-11-28">November 28, 2019</time> | <a href="#" class="link-color-3">Work Process</a>
+                      </div>
+                      <h2 class="mad-image-box-title"><a href="#">Aliquam Erat Volutpat Donec Sit</a></h2>
+                      <p>Aenean auctor wisi et urna. Aliquam erat volutpat. Duis ac turpis. Donec sit amet eros. Lorem ipsum dolor
+                        sit
+                        amet,
+                        consectetuer...</p>
+                      <div class="image-box-actions">
+                        <a href="#" class="read-more">read more</a>
+                        <a href="#" class="mad-ln--independent"><i class="licon-bubble"></i> 2</a>
+                      </div>
+                    </div>
+                  </div>
+                  <!--================ End of Image Box ================-->
+                </div>
+                <div class="mad-col">
+                  <!--================ Image Box ================-->
+                  <div class="mad-image-box">
+                    <div class="mad-image-box-media"><a href="#" class="mad-ln--independent"><img src="images/432x308_img2.jpg"
+                          alt=""></a></div>
+                    <div class="image-box-content">
+                      <div class="mad-box-meta">
+                        <time datetime="2019-11-20">November 20, 2019</time> | <a href="#" class="link-color-3">News</a>
+                      </div>
+                      <h2 class="mad-image-box-title"><a href="#">Donec Porta Diam Eu Massa</a></h2>
+                      <p>Mauris fermentum dictum magna. Sed laoreet aliquam leo. Ut tellus dolor, dapibus eget, elementum vel,
+                        cursus
+                        eleifend,
+                        elit...</p>
+                      <div class="image-box-actions">
+                        <a href="#" class="read-more">read more</a>
+                        <a href="#" class="mad-ln--independent"><i class="licon-bubble"></i> 0</a>
+                      </div>
+                    </div>
+                  </div>
+                  <!--================ End of Image Box ================-->
+                </div>
+                <div class="mad-col">
+                  <!--================ Image Box ================-->
+                  <div class="mad-image-box">
+                    <div class="mad-image-box-media"><a href="#" class="mad-ln--independent"><img src="images/432x308_img3.jpg"
+                          alt=""></a></div>
+                    <div class="image-box-content">
+                      <div class="mad-box-meta">
+                        <time datetime="2019-11-16">November 16, 2019</time> | <a href="#" class="link-color-3">Work Process</a>
+                      </div>
+                      <h2 class="mad-image-box-title"><a href="#">Fusce Euismod Consequat Ante</a></h2>
+                      <p>Aenean auctor wisi et urna. Aliquam erat volutpat. Duis ac turpis. Integer rutrum ante eu lacus. Vestibulum
+                        libero nisl,
+                        porta vel...</p>
+                      <div class="image-box-actions">
+                        <a href="#" class="read-more">read more</a>
+                        <a href="#" class="mad-ln--independent"><i class="licon-bubble"></i> 5</a>
+                      </div>
+                    </div>
+                  </div>
+                  <!--================ End of Image Box ================-->
+                </div>
+              </div>
+              <!--================ End of Image Boxes (Style 1) ================-->
+            </div>
+          </div>
+        </div>

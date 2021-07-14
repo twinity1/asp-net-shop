@@ -1,0 +1,77 @@
+@using DyShop.Data.Entities
+@using DyShop.Data.Entities.Enums
+@using DyShop.Helpers.Html
+@model DyShop.Areas.Shop.Models.OrderStatusViewModel
+
+@{
+    ViewData["Title"] = "Stav objednávky";
+    ViewData["Heading"] = "Děkujeme za objednávku!";
+    ViewData.HideBreadcrumbs();
+    var order = Model.Order;
+}
+
+<div class="mad-content">
+    <div class="container">
+        <div class="content-element-3">
+            <h1>Děkujeme za objednávku!</h1>
+            
+            <h3 class="mad-page-title">Číslo objednávky: @order.Id</h3>
+
+            <h4><span class="font-weight-bold">Stav objednávky:</span> @Model.Order.Status.StatusTitle()</h4>
+            <h4><span class="font-weight-bold">Zaplacena:</span> @(Model.Order.Paid ? "Ano" : "Ne")</h4>
+
+            <div class="mad-table-wrap mad-checkout-form">
+                <table>
+                    <thead>
+                    <tr class="bg">
+                        <th>Produkt</th>
+                        <th>Počet kusů</th>
+                        <th>Cena</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in order.OrderItems)
+                    {
+                        <tr>
+                            <td>@item.Title</td>
+                            <td>@item.Quantity</td>
+                            <td>@item.TotalPrice Kč</td>
+                        </tr>
+                    }
+                    <tr>
+                        <td>
+                            Doprava - @order.DeliveryTitle
+                        </td>
+                        <td>1</td>
+                        <td>
+                            @order.DeliveryPrice Kč
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Platební metoda - @order.PaymentTitle
+                        </td>
+                        <td>1</td>
+                        <td>
+                            @order.PaymentPrice Kč
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td>
+                            <h5 class="checkout-title">
+                                <strong>Celkem</strong>
+                            </h5>
+                        </td>
+                        <td></td>
+                        <td>
+                            <strong>43524 Kč</strong>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>        
+    </div>
+</div>

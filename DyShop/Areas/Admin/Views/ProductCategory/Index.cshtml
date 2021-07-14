@@ -1,0 +1,18 @@
+﻿@using GridMvc
+@using DyShop.Helpers
+@using DyShop.Helpers.Html
+@model IEnumerable<DyShop.Data.Entities.ProductCategory>
+@{
+    ViewData["Title"] = "Product categories overview";
+}
+
+<div class="d-flex justify-content-end m-1">
+    <a class="btn btn-primary" asp-action="New">New</a>
+</div>
+
+@Html.Grid(Model).Columns(columns =>
+{
+    columns.Add(x => x.Id);
+    columns.Add(x => x.Title);
+    columns.Add().Sanitized(false).Encoded(false).RenderValueAs(x => Html.Partial("_GridAction", x).GetString());
+}).Filterable().Sortable()

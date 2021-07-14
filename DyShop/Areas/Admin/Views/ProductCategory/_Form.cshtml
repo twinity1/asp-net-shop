@@ -1,0 +1,13 @@
+﻿@model DyShop.Areas.Admin.Models.ProductCategoryViewModel
+
+<form asp-action="@ViewContext.RouteData.Values["Action"]" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id"/>
+    
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input class="form-control" type="text" asp-for="Title">
+        <span class="text-danger" asp-validation-for="Title"></span>
+    </div>
+
+    <button class="btn btn-primary">Submit</button>
+</form>

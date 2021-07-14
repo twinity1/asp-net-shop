@@ -1,0 +1,16 @@
+@model DyShop.Data.Entities.Product
+
+<div class="mad-product">
+  <figure class="mad-product-image">
+    <a asp-area="Shop" asp-controller="Product" asp-action="Detail" asp-route-slug="@Model.Slug">
+      <img class="img-fluid" src="/@Model.ProductPhotos.First().SavePath?width=400&quality=90" alt="@Model.Title">
+    </a>
+    <div class="overlay">
+      <a asp-area="Shop" asp-controller="Product" asp-action="Detail" asp-route-slug="@Model.Slug" class="btn">Zobrazit</a>
+    </div>
+  </figure>
+  <div class="mad-product-description">
+    <h5 class="mad-product-title"><a asp-area="Shop" asp-controller="Product" asp-action="Detail" asp-route-slug="@Model.Slug">@Model.Title</a></h5>
+    <span class="mad-product-price">@Model.Price Kč</span>
+  </div>
+</div>

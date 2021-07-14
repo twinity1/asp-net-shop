@@ -1,0 +1,27 @@
+@model DyShop.Areas.Shop.Views.Shared.Components.Breadcrumbs.BreadcrumbsViewModel
+
+@{
+    var breadcrumbs = Model.Breadcrumbs.ToList();
+    var itemsCount = breadcrumbs.Count;
+}
+
+@for (var i = 0; i < itemsCount; i++)
+{
+    <span>
+        @if (i + 1 != itemsCount)
+        {
+            <a asp-controller="@breadcrumbs[i].Controller" asp-action="@breadcrumbs[i].Action" asp-all-route-data="@breadcrumbs[i].ParamsAsDictionary()">
+                @breadcrumbs[i].Title
+            </a>
+        }
+        else
+        {
+            @breadcrumbs[i].Title
+        }
+    </span>
+    
+    @if (i + 1 != itemsCount)
+    {
+        <span>/</span>
+    }
+ }

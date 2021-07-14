@@ -1,0 +1,35 @@
+@model DyShop.Data.Entities.Cart?
+
+@if (Model != null)
+{
+    <div class="mad-products mad-product-small">
+      <div id="cartAddAlert" style="display: none" role="alert" class="mad-alert-box mad-alert-box--success">
+          <div class="mad-alert-box-inner">
+              Produkt přidán do košíku.
+          </div>
+      </div>
+        
+        @foreach (var cartItem in Model.Items)
+        {
+            <div class="mad-col">
+                <div class="mad-product">
+                    <button class="mad-close-item" data-id="@cartItem.Id"><i class="licon-cross-circle"></i></button>
+                    <a asp-area="Shop" asp-controller="Product" asp-action="Detail" asp-route-slug="@cartItem.Product.Slug" class="mad-product-image">
+                        <img src="~/@cartItem.Product.MainPhoto.SavePath?width=120" alt="@cartItem.Product.Title">
+                    </a>
+                    <div class="mad-product-description">
+                        <h5 class="mad-product-title"><a asp-area="Shop" asp-controller="Product" asp-action="Detail" asp-route-slug="@cartItem.Product.Slug">@cartItem.Product.Title</a></h5>
+                        <span class="mad-product-price">@cartItem.Price Kč</span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="sc-footer">
+        <div class="subtotal">Celkem: <span class="total-price">@Model.TotalPrice() Kč</span></div>
+        <div class="btns">
+            <a asp-controller="Cart" asp-action="Index" class="btn btn-style-4 btn-small">Zobrazit</a>
+            <a asp-controller="Cart" asp-action="Checkout" class="btn btn-small">Dokončit objednávku</a>
+        </div>
+    </div>
+}
